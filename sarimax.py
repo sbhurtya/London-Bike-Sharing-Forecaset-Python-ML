@@ -1,10 +1,15 @@
 import pandas as pd
 import numpy as np
+import random
+np.random.seed(42)
+random.seed(42)
 import matplotlib.pyplot as plt
 from pmdarima import auto_arima
 from pmdarima.arima import StepwiseContext
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import warnings
+warnings.filterwarnings('ignore')
 
 def SARIMAX_model(train_df, test_df):
     #Standardize the data
@@ -19,7 +24,7 @@ def SARIMAX_model(train_df, test_df):
     X_test_scaled = scaler.transform(X_test)
 
     #Auto ARIMA
-    with StepwiseContext(max_steps=3):
+    with StepwiseContext(max_steps=5):
         model = auto_arima(y=y_train,
                             X=X_train_scaled,
                             start_p=0,

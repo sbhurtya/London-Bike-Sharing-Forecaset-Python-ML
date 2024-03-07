@@ -1,10 +1,15 @@
 import pandas as pd
 import numpy as np
+import random
+np.random.seed(42)
+random.seed(42)
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from xgboost import XGBRegressor
 import optuna
+import warnings
+warnings.filterwarnings('ignore')
 
 
 def xgboost_model(train_train_df, val_df, test_df):

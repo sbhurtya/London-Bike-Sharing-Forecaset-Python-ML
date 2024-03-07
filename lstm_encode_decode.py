@@ -3,7 +3,8 @@ os.environ['CUDA_VISIBLE_DEVICES']='-1'
 os.environ['TF_CUDNN_USE_AUTOTUNE'] ='0'
 os.environ['TF_DETERMINISTIC_OPS'] = '1'
 os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+
 
 import pandas as pd
 import numpy as np
@@ -14,10 +15,15 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import tensorflow as tf
+tf.autograph.set_verbosity(0, alsologtostdout=False)
+tf.keras.config.disable_interactive_logging()
 from tensorflow.python.keras import backend as K
 import optuna
+import warnings
+warnings.filterwarnings('ignore')
 
 def seed_everything():
+    tf.get_logger().setLevel('ERROR')
     tf.random.set_seed(42)
     tf.keras.utils.set_random_seed(42)
     tf.compat.v1.reset_default_graph()
@@ -143,7 +149,7 @@ def lstm_model(train_train_df, val_df, test_df, lookback, forecast_horizon):
         pass
     storage = f'sqlite:///{study_name}.db'
     study = optuna.create_study(study_name=study_name, storage=storage, load_if_exists=True, sampler=optuna.samplers.TPESampler(seed=42))
-    study.optimize(lstm_objective, n_trials=2, n_jobs=1, show_progress_bar=True)
+    study.optimize(lstm_objective, n_trials=5, n_jobs=1, show_progress_bar=True)
 
     # Best parameters
     study_name = 'lstm_study'

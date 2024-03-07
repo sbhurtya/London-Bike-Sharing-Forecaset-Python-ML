@@ -3,6 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from prophet import Prophet
+import warnings
+import logging
+warnings.filterwarnings('ignore')
+logging.getLogger('prophet').setLevel(logging.ERROR)
 
 
 def prophet_model(train_df, test_df):
