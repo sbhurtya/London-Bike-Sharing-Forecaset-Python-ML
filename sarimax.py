@@ -72,6 +72,7 @@ def SARIMAX_plot(y_train, y_test, y_pred):
     plt.plot(y_test.index.to_timestamp(), y_test, label='Actual')
     plt.plot(y_test.index.to_timestamp(), y_pred, label='Predicted')
     plt.xticks(rotation=90)
+    plt.title('Actual vs Predicted for SARIMAX')
     plt.legend()
     
 

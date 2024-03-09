@@ -6,6 +6,10 @@ from prophet import Prophet
 import warnings
 import logging
 warnings.filterwarnings('ignore')
+logger = logging.getLogger('cmdstanpy')
+logger.addHandler(logging.NullHandler())
+logger.propagate = False
+logger.setLevel(logging.CRITICAL)
 logging.getLogger('prophet').setLevel(logging.ERROR)
 
 
@@ -52,6 +56,7 @@ def prophet_plot(train_df, test_df, y_pred):
     plt.title('Bike Rentals')
     plt.xlabel('Date')
     plt.ylabel('Number of Rentals')
+    plt.title('Actual vs Predicted for Prophet')
     plt.legend()
     plt.show()
 

@@ -19,6 +19,7 @@ tf.autograph.set_verbosity(0, alsologtostdout=False)
 tf.keras.config.disable_interactive_logging()
 from tensorflow.python.keras import backend as K
 import optuna
+optuna.logging.set_verbosity(optuna.logging.WARNING)
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -149,7 +150,7 @@ def lstm_model(train_train_df, val_df, test_df, lookback, forecast_horizon):
         pass
     storage = f'sqlite:///{study_name}.db'
     study = optuna.create_study(study_name=study_name, storage=storage, load_if_exists=True, sampler=optuna.samplers.TPESampler(seed=42))
-    study.optimize(lstm_objective, n_trials=5, n_jobs=1, show_progress_bar=True)
+    study.optimize(lstm_objective, n_trials=5, n_jobs=1, show_progress_bar=False)
 
     # Best parameters
     study_name = 'lstm_study'
@@ -249,5 +250,6 @@ def lstm_plot(train_df, test_df, predictions, lookback):
     plt.title('Bike Rentals')
     plt.xlabel('Date')
     plt.ylabel('Number of Rentals')
+    plt.title('Actual vs Predicted for LSTM')
     plt.legend()
     plt.show()

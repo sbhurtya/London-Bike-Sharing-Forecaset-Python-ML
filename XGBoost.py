@@ -8,6 +8,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from xgboost import XGBRegressor
 import optuna
+optuna.logging.set_verbosity(optuna.logging.WARNING)
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -55,7 +56,7 @@ def xgboost_model(train_train_df, val_df, test_df):
         pass
     storage = f'sqlite:///{study_name}.db'
     study = optuna.create_study(study_name=study_name, storage=storage, load_if_exists=True, sampler=optuna.samplers.TPESampler(seed=42))
-    study.optimize(xgboost_objective, n_trials=50, n_jobs=1, show_progress_bar=True)
+    study.optimize(xgboost_objective, n_trials=50, n_jobs=1, show_progress_bar=False)
 
     # Best parameters
     best_params = study.best_params
@@ -85,5 +86,6 @@ def xgboost_plot(train_df, test_df, y_pred):
     plt.title('Bike Rentals')
     plt.xlabel('Date')
     plt.ylabel('Number of Rentals')
+    plt.title('Actual vs Predicted for XGBoost')
     plt.legend()
     plt.show()
